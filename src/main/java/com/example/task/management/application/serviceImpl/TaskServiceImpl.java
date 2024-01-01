@@ -37,13 +37,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task getTaskById(Long id, Long aLong) {
-        return taskRepository.findById(id).orElse(null);
+    public Task getTaskById(Long taskId) {
+        return taskRepository.findById(taskId).orElse(null);
     }
 
     @Override
-    public Task updateTaskById(Long id, Long taskId, Task task) {
-        Optional<Task> savedTask = taskRepository.findById(id);
+    public Task updateTaskById(Long taskId, Task task) {
+        Optional<Task> savedTask = taskRepository.findById(taskId);
         if (savedTask.isEmpty()) {
             return null;
         }
@@ -57,13 +57,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void deleteTaskById(Long id) {
-        taskRepository.deleteById(id);
+    public void deleteTaskById(Long taskId) {
+        Task task = taskRepository.findById(taskId).get();
+        task.setUser(null);
+        taskRepository.save(task);
+        taskRepository.deleteById(taskId);
     }
 
     @Override
-    public Task markTaskAsCompleted(Long id) {
-        Optional<Task> savedTask = taskRepository.findById(id);
+    public Task markTaskAsCompleted(Long taskId) {
+        Optional<Task> savedTask = taskRepository.findById(taskId);
         if (savedTask.isEmpty()) {
             return null;
         }

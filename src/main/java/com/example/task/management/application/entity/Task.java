@@ -3,6 +3,8 @@ package com.example.task.management.application.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;

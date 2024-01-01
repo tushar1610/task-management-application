@@ -7,13 +7,13 @@ import java.util.List;
 public interface TaskService {
     Task addTask(Long userId, Task task);
 
-    Task getTaskById(Long id, Long aLong);
+    Task getTaskById(Long taskId);
 
-    Task updateTaskById(Long id, Long taskId, Task task);
+    Task updateTaskById(Long taskId, Task task);
 
-    void deleteTaskById(Long id);
+    void deleteTaskById(Long taskId);
 
-    Task markTaskAsCompleted(Long id);
+    Task markTaskAsCompleted(Long taskId);
 
     List<Task> getAllTasksByUserId(Long userId);
 }

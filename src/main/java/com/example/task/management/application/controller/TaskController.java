@@ -58,7 +58,7 @@ public class TaskController {
     public ResponseEntity<Task> getTaskById(@PathVariable("userId") Long userId, @PathVariable("taskId") Long taskId){
         if (!verifyAuthentication(userId)) throw new UserNotAuthorizedException("Access denied. Unauthorized access.");
 
-        Task task = taskService.getTaskById(userId, taskId);
+        Task task = taskService.getTaskById(taskId);
         if(task == null){
             throw new ResourceNotFoundException("No task with id : " + taskId + " for this user.");
         }
@@ -82,7 +82,7 @@ public class TaskController {
     public ResponseEntity<Task> updateTaskById(@PathVariable("userId") Long userId, @PathVariable("taskId") Long taskId, @RequestBody Task task){
         if (!verifyAuthentication(userId)) throw new UserNotAuthorizedException("Access denied. Unauthorized access.");
 
-        Task updatedTask = taskService.updateTaskById(userId, taskId, task);
+        Task updatedTask = taskService.updateTaskById(taskId, task);
         if(updatedTask == null){
             throw new ResourceNotFoundException("No task with id : " + taskId);
         }
@@ -106,7 +106,7 @@ public class TaskController {
     public ResponseEntity<String> deleteTaskById(@PathVariable("userId") Long userId, @PathVariable("taskId") Long taskId){
         if (!verifyAuthentication(userId)) throw new UserNotAuthorizedException("Access denied. Unauthorized access.");
 
-        if(taskService.getTaskById(userId, taskId) == null){
+        if(taskService.getTaskById(taskId) == null){
             throw new ResourceNotFoundException("No task with id : " + taskId);
         }
         taskService.deleteTaskById(taskId);

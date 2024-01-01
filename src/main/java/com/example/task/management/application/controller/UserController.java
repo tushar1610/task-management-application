@@ -79,16 +79,13 @@ public class UserController {
 
     @CrossOrigin
     @GetMapping("/get/details")
-    public ResponseEntity<User> getDetails(@RequestParam("email") String email){
+    public ResponseEntity<User> getDetails(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if(authentication == null) throw new UserNotAuthorizedException("Access denied. Unauthorized access.");
 
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userService.getDetails(userDetails.getUsername());
-        if(!Objects.equals(user.getEmail(), email)){
-            throw new UserNotAuthorizedException("User email provided doesn't belong to logged in user");
-        }
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 }
