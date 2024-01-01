@@ -1,13 +1,16 @@
 package com.example.task.management.application.serviceImpl;
 
 import com.example.task.management.application.entity.Task;
+import com.example.task.management.application.entity.User;
 import com.example.task.management.application.repository.TaskRepository;
+import com.example.task.management.application.repository.UserRepository;
 import com.example.task.management.application.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,25 +19,30 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
-    public Task addTask(Task task) {
+    public Task addTask(Long userId, Task task) {
+        User user = userRepository.findById(userId).get();
         Task newTask = Task.builder()
                 .taskHeading(task.getTaskHeading())
                 .taskDescription(task.getTaskDescription())
                 .taskCreationDate(LocalDate.now())
                 .taskCreationTime(LocalTime.now())
                 .isTaskCompleted(false)
+                .user(user)
                 .build();
         return taskRepository.save(newTask);
     }
 
     @Override
-    public Task getTaskById(Long id) {
+    public Task getTaskById(Long id, Long aLong) {
         return taskRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Task updateTaskById(Long id, Task task) {
+    public Task updateTaskById(Long id, Long taskId, Task task) {
         Optional<Task> savedTask = taskRepository.findById(id);
         if (savedTask.isEmpty()) {
             return null;
@@ -61,5 +69,10 @@ public class TaskServiceImpl implements TaskService {
         }
         savedTask.get().setIsTaskCompleted(true);
         return taskRepository.save(savedTask.get());
+    }
+
+    @Override
+    public List<Task> getAllTasksByUserId(Long userId) {
+        return taskRepository.findAllByUserUserId(userId);
     }
 }
